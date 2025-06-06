@@ -44,7 +44,8 @@ int main (){
 
 	square *player;
 
-	flag *flag = create_flag(1, 0, 0, 0, 0, 0);
+	flag *flag = create_flag();
+	flag->display = 1;
 
 	while(flag->display){
 
@@ -57,24 +58,24 @@ int main (){
 		//configuracao de tamanho dinamico
 		if(tela->x == 640){
 			inicio = al_load_bitmap("sprites/fundo_inicio/inicio(640).jpg");
-			fundo = al_load_bitmap("sprites/fundo_jogo/fundo(640).jpg");
+			fundo = al_load_bitmap("sprites/fundo_jogo/fundo360.png");
 			fundo_config = al_load_bitmap("sprites/fundo_confg/fundo_config(640).jpg");
 		} else if (tela->x == 800){
 			inicio = al_load_bitmap("sprites/fundo_inicio/inicio(800).jpg");
-			fundo = al_load_bitmap("sprites/fundo_jogo/fundo(800).jpg");
+			fundo = al_load_bitmap("sprites/fundo_jogo/fundo450.png");
 			fundo_config = al_load_bitmap("sprites/fundo_confg/fundo_config(800).jpg");
 		} else if (tela->x == 1024){
 			inicio = al_load_bitmap("sprites/fundo_inicio/inicio(1k).jpg");
-			fundo = al_load_bitmap("sprites/fundo_jogo/fundo(1024).jpg");
+			fundo = al_load_bitmap("sprites/fundo_jogo/fundo576.png");
 			fundo_config = al_load_bitmap("sprites/fundo_confg/fundo_config(1024).jpg");
 		} else if (tela->x == 1920){
 			inicio = al_load_bitmap("sprites/fundo_inicio/inicio(4k).jpg");
-			fundo = al_load_bitmap("sprites/fundo_jogo/fundo(1920).jpg");
+			fundo = al_load_bitmap("sprites/fundo_jogo/fundo1080.png");
 			fundo_config = al_load_bitmap("sprites/fundo_confg/fundo_config(1920).jpg");
 		} else {
 			inicio = al_load_bitmap("sprites/fundo_inicio/inicio(4k).jpg");
 			al_draw_scaled_bitmap(inicio, 0, 0, 1920, 1080, 0, 0, tela->x, tela->y, 0);
-			fundo = al_load_bitmap("sprites/fundo_jogo/fundo(1920).jpg");
+			fundo = al_load_bitmap("sprites/fundo_jogo/fundo1080.png");
 			al_draw_scaled_bitmap(fundo, 0, 0, 1920, 1080, 0, 0, tela->x, tela->y, 0);
 			fundo_config = al_load_bitmap("sprites/fundo_confg/fundo_config(1920).jpg");
 			al_draw_scaled_bitmap(fundo_config, 0, 0, 1920, 1080, 0, 0, tela->x, tela->y, 0);
@@ -85,25 +86,20 @@ int main (){
 
 		al_register_event_source(event_queue, al_get_display_event_source(display));
 
-		//gerando uma tela de inicio
-		tela_de_inicio(event_queue, fila_eventos, inicio, font, fundo_config, tela, flag);
-
-		tela_selecao(event_queue, fila_eventos, fundo_config, font, tela, flag);
-
-		player = square_create(tela->player, tela->x/15, tela->y/1.28, tela->x, tela->y);
-
-		//parte jogavel
-		while(flag->jogo){
+		flag->main = 1;
+		//controla os estados
+		while(flag->main){
 
 			ALLEGRO_EVENT event;
 			al_wait_for_event(event_queue, &event);
 
-			if (event.type == 30){
-				al_clear_to_color(al_map_rgb(0, 0, 0));
-				al_draw_bitmap(fundo, 0, 0, 0);																																						//Substitui tudo que estava desenhado na tela por um fundo preto
-				al_draw_filled_rectangle(player->x-player->side/2, player->y-player->side/2, player->x+player->side/2, player->y+player->side/2, al_map_rgb(255, 0, 0));					//Insere o quadrado do primeiro jogador na tela
-				al_flip_display();																																											//Insere as modificações realizadas nos buffers de tela
-			}
+			//gerando uma tela de inicio
+			tela_de_inicio(event_queue, fila_eventos, inicio, font, fundo_config, tela, flag);
+
+			//gerando tela de selecao
+			tela_selecao(event_queue, fila_eventos, fundo_config, font, tela, flag);
+
+			tela_jogo(event_queue, fila_eventos, fundo, font, tela, flag);
 
 			if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
 

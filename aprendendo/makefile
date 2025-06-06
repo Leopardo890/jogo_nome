@@ -1,5 +1,5 @@
 TARGET = AS
-SOURCES = AggressiveSquares.c Square.c tela.c
+SOURCES = AggressiveSquares.c Square.c tela.c Joystick.c
 ALLEGRO_FLAGS = $(shell pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_ttf-5 allegro_primitives-5 --libs --cflags)
 
 all:
