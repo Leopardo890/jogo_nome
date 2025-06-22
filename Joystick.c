@@ -8,8 +8,9 @@ joystick* joystick_create(){														//Implementação da função "joystic
 	element->left = 0;																//Insere o estado de desligado para o botão de movimentação à direita (!)
 	element->up = 0;																//Insere o estado de desligado para o botão de movimentação para cima (!)
 	element->down = 0;																//Insere o estado de desligado para o botão de movimentação para baixo (!)
-	element->pulo = 0;
+	element->atirando = 0;
 	element->andando = 0;
+	element->fire = 0;
 	return element;																	//Retorna o novo controle (!)
 }
 
@@ -31,5 +32,6 @@ void joystick_up(joystick *element){ element->up = element->up ^ 1;}				//Implem
 
 void joystick_down(joystick *element){ element->down = element->down ^ 1;}			//Implementação da função "joystick_down"; muda o estado do botão (!)
 
-void joystick_pulo(joystick *element){ element->pulo = element->pulo ^ 1;}
+void joystick_atirando(joystick *element){ element->atirando = element->atirando ^ 1;}
 
+void joystick_fire(joystick *element){ element->fire = element->fire ^ 1;}

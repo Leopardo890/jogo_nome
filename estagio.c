@@ -2,265 +2,434 @@
 #include "tela.h"
 #include <stdio.h>
 
-int tela_fase1(ALLEGRO_EVENT_QUEUE * event_queue,
-    ALLEGRO_BITMAP * fundo_jogo, ALLEGRO_FONT *font, tela *tela, player *personagem){
+int tela_ganhou(ALLEGRO_EVENT_QUEUE * event_queue,
+    ALLEGRO_BITMAP * fundo_fim, ALLEGRO_FONT *font, tela *tela){
 
-        int frame_up = 0;
-        int frame_up_left = 8;
-        int frame_parado = 0;
-        int frame_right = 0;
-        int frame_left = 5;
-        int agachado = 0;
-        int contador = 0;
-        int olhando = 1;
-        camera *camera = create_camera(0, 0);
+    ALLEGRO_COLOR cor_button1 = al_map_rgb(100,0,0);
+
+    int selecionado = 0;
 
     while(1){
-
         ALLEGRO_EVENT event;
         al_wait_for_event(event_queue, &event);
 
-        //fundo
         al_clear_to_color(al_map_rgb(0,0,0));
-        al_draw_scaled_bitmap(fundo_jogo,
+        al_draw_scaled_bitmap(fundo_fim,
             0, 0, // Ponto de origem do bitmap (canto superior esquerdo)
-            al_get_bitmap_width(fundo_jogo), // Largura original do bitmap
-            al_get_bitmap_height(fundo_jogo), // Altura original do bitmap
-            -camera->x, 0, // Ponto de destino na tela (canto superior esquerdo)
+            al_get_bitmap_width(fundo_fim), // Largura original do bitmap
+            al_get_bitmap_height(fundo_fim), // Altura original do bitmap
+            0, 0, // Ponto de destino na tela (canto superior esquerdo)
             tela->x, // Largura para desenhar (largura da tela)
-            tela->y - tela->font, // Altura para desenhar (altura da tela)
+            tela->y, // Altura para desenhar (altura da tela)
             0 // Flags (normalmente 0)
         );
-        al_draw_scaled_bitmap(fundo_jogo,
-            0, 0, // Ponto de origem do bitmap (canto superior esquerdo)
-            al_get_bitmap_width(fundo_jogo), // Largura original do bitmap
-            al_get_bitmap_height(fundo_jogo), // Altura original do bitmap
-            -camera->x + tela->x, 0, // Ponto de destino na tela (canto superior esquerdo)
-            tela->x, // Largura para desenhar (largura da tela)
-            tela->y - tela->font, // Altura para desenhar (altura da tela)
-            0 // Flags (normalmente 0)
-        );
-        al_draw_scaled_bitmap(fundo_jogo,
-            0, 0, // Ponto de origem do bitmap (canto superior esquerdo)
-            al_get_bitmap_width(fundo_jogo), // Largura original do bitmap
-            al_get_bitmap_height(fundo_jogo), // Altura original do bitmap
-            -camera->x + 2*tela->x, 0, // Ponto de destino na tela (canto superior esquerdo)
-            tela->x, // Largura para desenhar (largura da tela)
-            tela->y - tela->font, // Altura para desenhar (altura da tela)
-            0 // Flags (normalmente 0)
-        );
-        
-        if((event.type == 10) || event.type == 12){
-            //movimento para a esquerda
-            if(event.keyboard.keycode == 1){
-                joystick_left(personagem->controle);
-                olhando = 1;
-            }
-            //movimento para a direita
-            if(event.keyboard.keycode == 4){
-                olhando = 2;
-                joystick_right(personagem->controle);
-            }
-            //agachar
-            if(event.keyboard.keycode == 19) joystick_down(personagem->controle);
-        }
 
-        //pupar
-        if(event.type == 10 && event.keyboard.keycode == 75 && !personagem->controle->up)joystick_up(personagem->controle);
-
-        if(event.type == 30){
-            //atualiza posicao
-            if(personagem->controle->left){
-                player_move(personagem, 1, 0, 3*tela->x, tela->y);
-                muda_camera(camera, tela, personagem->x - tela->x/2 + personagem->side_x/2, camera->y, 3*tela->x, camera->y);
-            }else if(personagem->controle->right){
-                player_move(personagem, 1, 1, 3*tela->x, tela->y);
-                muda_camera(camera, tela, personagem->x - tela->x/2 + personagem->side_x/2, camera->y, 3*tela->x, camera->y);
+        if(event.keyboard.keycode == 19 && (event.type == 10)){
+            if(selecionado == 0){
+                cor_button1 = al_map_rgb(0,0,255);
+                selecionado = 1;
+            } else if(selecionado == 1){
+                cor_button1 = al_map_rgb(100,0,0);
+                selecionado = 0;
             }
         }
 
-        //personagem parado direita
-        if(personagem->controle->andando == 0 && olhando == 2 && !personagem->controle->up){
-            if(personagem->controle->down){
-                frame_parado = 0;
-                agachado = 6;
-            }else agachado = 7;
-
-            al_draw_scaled_bitmap(personagem->aparencia[agachado],
-                128*frame_parado, 0, // imagem 3
-                128, //largura
-                128, // altura
-                personagem->x - camera->x, personagem->y, // Ponto de destino na tela
-                personagem->side_x, // Largura para desenhar (largura da tela)
-                personagem->side_y, // Altura para desenhar (altura da tela)
-                0 // Flags (normalmente 0)
-            );
-
-            if(event.type == ALLEGRO_EVENT_TIMER) contador++;
-            if(contador == 6){
-                if(!personagem->controle->down) frame_parado = (frame_parado + 1)%7;
-                contador = 0;
+        if(event.keyboard.keycode == 23 && (event.type == 10)){
+            if(selecionado == 1){
+                cor_button1 = al_map_rgb(100,0,0);
+                selecionado = 0;
+            } else if(selecionado == 0){
+                cor_button1 = al_map_rgb(0,0,255);
+                selecionado = 1;
             }
         }
 
-        //personagem parado esquerda
-        if(personagem->controle->andando == 0 && olhando == 1 && !personagem->controle->up){
-            if(personagem->controle->down){
-                frame_parado = 0;
-                agachado = 12;
-            }else agachado = 13;
+        al_draw_justified_text(font, al_map_rgb(255,255,255), tela->x/2 - tela->font*5.5, 0,
+        tela->y/2 - tela->font*5.5, 0, 0, "PARABENS, VOCE GANHOU!!");
 
-            al_draw_scaled_bitmap(personagem->aparencia[agachado],
-                128*frame_parado, 0, // imagem 3
-                128, //largura
-                128, // altura
-                personagem->x - camera->x, personagem->y, // Ponto de destino na tela
-                personagem->side_x, // Largura para desenhar (largura da tela)
-                personagem->side_y, // Altura para desenhar (altura da tela)
-                0 // Flags (normalmente 0)
-            );
+        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        tela->y/2 - tela->font*2.5, ALLEGRO_ALIGN_CENTRE, 
+        "Com bravura inabalavel, voce se aventurou na cidade");
+        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        tela->y/2 - tela->font*1.5, ALLEGRO_ALIGN_CENTRE, 
+        "em ruinas. Ali, com a forca de mil lendas, aniquilou");
+        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        tela->y/2 - tela->font*0.5, ALLEGRO_ALIGN_CENTRE, 
+        "o exercito ciborgue e seu tirano lider. Por sua causa,");
+        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2 ,
+        tela->y/2 + tela->font*0.5, ALLEGRO_ALIGN_CENTRE, 
+        "inumeras vidas foram poupadas, e das cinzas, a cidade");
+        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        tela->y/2 + tela->font*1.5, ALLEGRO_ALIGN_CENTRE, 
+        "erguer-se-á novamente, mais majestosa");
+        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        tela->y/2 + tela->font*2.5, ALLEGRO_ALIGN_CENTRE, 
+        "do que em seus dias de gloria.");
 
-            if(event.type == ALLEGRO_EVENT_TIMER) contador++;
-            if(contador == 6){
-                if(!personagem->controle->down) frame_parado = (frame_parado - 1);
-                if(frame_parado < 0)frame_parado = 6;
-                contador = 0;
-            }
-        }
-
-        //andando para a esquerda
-        if(personagem->controle->left && !personagem->controle->up){
-            if(personagem->controle->down){
-                if(frame_left > 2)frame_left = 2;
-                agachado = 12;
-            }else agachado = 11;
-
-            al_draw_scaled_bitmap(personagem->aparencia[agachado],
-                128*frame_left, 0, // imagem 3
-                128, //largura
-                128, // altura
-                personagem->x - camera->x, personagem->y, // Ponto de destino na tela
-                personagem->side_x, // Largura para desenhar (largura da tela)
-                personagem->side_y, // Altura para desenhar (altura da tela)
-                0 // Flags (normalmente 0)
-            );
-
-            if(event.type == ALLEGRO_EVENT_TIMER) contador++;
-            if(contador == 6){
-                if(personagem->controle->down) frame_left = (frame_left + 1)%3;
-                else frame_left = (frame_left - 1);
-                if(frame_left < 0) frame_left = 5;
-                contador = 0;
-            }
-        }
-
-        //andando para a direita
-        if(personagem->controle->right && !personagem->controle->up){
-            if(personagem->controle->down){
-                if(frame_right > 2)frame_right = 0;
-                agachado = 6;
-            }else agachado = 10;
-            
-
-            al_draw_scaled_bitmap(personagem->aparencia[agachado],
-                128*frame_right, 0, // imagem 3
-                128, //largura
-                128, // altura
-                personagem->x - camera->x, personagem->y, // Ponto de destino na tela
-                personagem->side_x, // Largura para desenhar (largura da tela)
-                personagem->side_y, // Altura para desenhar (altura da tela)
-                0 // Flags (normalmente 0)
-            );
-
-            if(event.type == ALLEGRO_EVENT_TIMER) contador++;
-            if(contador == 6){
-                if(personagem->controle->down) frame_right = (frame_right + 1)%3;
-                else frame_right = (frame_right + 1)%6;
-                contador = 0;
-            }
-        }
-
-        //pulando para direita
-        if(personagem->controle->up && olhando == 2){
-            
-
-            al_draw_scaled_bitmap(personagem->aparencia[8],
-                128*frame_up, 0, // imagem x
-                128, //largura
-                128, // altura
-                personagem->x - camera->x, personagem->y, // Ponto de destino na tela
-                personagem->side_x, // Largura para desenhar (largura da tela)
-                personagem->side_y, // Altura para desenhar (altura da tela)
-                0 // Flags (normalmente 0)
-            );
-
-            if(event.type == ALLEGRO_EVENT_TIMER){
-                if(frame_up == 3) personagem->y -= PLAYER_STEP*3;
-                if(frame_up == 4) personagem->y -= PLAYER_STEP*4;
-                if(frame_up == 5) personagem->y += PLAYER_STEP*4;
-                if(frame_up == 6) personagem->y += PLAYER_STEP*3;
-                contador++;
-            }
-            if(contador == 6){
-                frame_up = frame_up + 1;
-                contador = 0;
-            }
-            if(frame_up > 8){
-                frame_up = 0;
-                joystick_up(personagem->controle);
-            }
-        }
-
-        //pulando para a esquerda
-        if(personagem->controle->up && olhando == 1){
-            
-
-            al_draw_scaled_bitmap(personagem->aparencia[14],
-                128*frame_up_left, 0, // imagem x
-                128, //largura
-                128, // altura
-                personagem->x - camera->x, personagem->y, // Ponto de destino na tela
-                personagem->side_x, // Largura para desenhar (largura da tela)
-                personagem->side_y, // Altura para desenhar (altura da tela)
-                0 // Flags (normalmente 0)
-            );
-
-            if(event.type == ALLEGRO_EVENT_TIMER){
-                if(frame_up_left == 3) personagem->y += PLAYER_STEP*3;
-                if(frame_up_left == 4) personagem->y += PLAYER_STEP*4;
-                if(frame_up_left == 5) personagem->y -= PLAYER_STEP*4;
-                if(frame_up_left == 6) personagem->y -= PLAYER_STEP*3;
-                contador++;
-            }
-            if(contador == 6){
-                frame_up_left = frame_up_left - 1;
-                contador = 0;
-            }
-            if(frame_up_left < 0){
-                frame_up_left = 8;
-                joystick_up(personagem->controle);
-            }
-        }
+        al_draw_justified_text(font, cor_button1, tela->x/2 - tela->font*2, 0,
+        tela->y/2 + tela->font*4.5, 0, 0, "Tela Inicial");
 
 
         al_flip_display();
 
+        if(event.keyboard.keycode == 67 && event.type == 10){
 
+            if(selecionado == 1)return 1;
+
+        }
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
-            return 0; //terminar execucao
+            return 0; //fim execucao
+        }
+    }
+}
+
+int tela_fim(ALLEGRO_EVENT_QUEUE * event_queue,
+    ALLEGRO_BITMAP * fundo_fim, ALLEGRO_FONT *font, tela *tela, player *personagem){
+
+    ALLEGRO_COLOR cor_button1 = al_map_rgb(100,0,0);
+    ALLEGRO_COLOR cor_button2 = al_map_rgb(100,0,0);
+
+    int selecionado = 0;
+
+    while(1){
+        ALLEGRO_EVENT event;
+        al_wait_for_event(event_queue, &event);
+
+        al_clear_to_color(al_map_rgb(0,0,0));
+        al_draw_scaled_bitmap(fundo_fim,
+            0, 0, // Ponto de origem do bitmap (canto superior esquerdo)
+            al_get_bitmap_width(fundo_fim), // Largura original do bitmap
+            al_get_bitmap_height(fundo_fim), // Altura original do bitmap
+            0, 0, // Ponto de destino na tela (canto superior esquerdo)
+            tela->x, // Largura para desenhar (largura da tela)
+            tela->y, // Altura para desenhar (altura da tela)
+            0 // Flags (normalmente 0)
+        );
+
+        if(event.keyboard.keycode == 19 && (event.type == 10)){
+            if(selecionado == 0){
+                cor_button1 = al_map_rgb(0,0,255);
+                cor_button2 = al_map_rgb(100,0,0);
+                selecionado = 1;
+            } else if(selecionado == 1){
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(100,0,0);
+                selecionado = 0;
+            } else if(selecionado == 2){
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(100,0,0);
+                selecionado = 0;
+            } 
         }
 
-    }
+        if(event.keyboard.keycode == 23 && (event.type == 10)){
+            if(selecionado == 2){
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(100,0,0);
+                selecionado = 0;
+            } else if(selecionado == 1){
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(100,0,0);
+                selecionado = 0;
+            } else if(selecionado == 0){
+                cor_button1 = al_map_rgb(0,0,255);
+                cor_button2 = al_map_rgb(100,0,0);
+                selecionado = 1;
+            }
+        }
 
+        //movimento para a esquerda
+        if(event.keyboard.keycode == 1 && (event.type == 10)){
+            if(selecionado == 0){
+                selecionado = 2;
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(0,0,255);
+
+            } else if(selecionado == 1){
+                selecionado = 0;
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(100,0,0);
+
+            } else if(selecionado == 2){
+                selecionado = 1;
+                cor_button1 = al_map_rgb(0,0,255);
+                cor_button2 = al_map_rgb(100,0,0);
+            }
+        }
+
+        if(event.keyboard.keycode == 4 && (event.type == 10)){
+            if(selecionado == 0){
+                selecionado = 1;
+                cor_button1 = al_map_rgb(0,0,255);
+                cor_button2 = al_map_rgb(100,0,0);
+
+            } else if(selecionado == 1){
+                selecionado = 2;
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(0,0,255);
+
+            } else if(selecionado == 2){
+                selecionado = 0;
+                cor_button1 = al_map_rgb(100,0,0);
+                cor_button2 = al_map_rgb(100,0,0);
+            }
+        }
+
+        al_draw_justified_text(font, al_map_rgb(255,255,255), tela->x/2 - tela->font*3.5, 0,
+        tela->y/2 - tela->font*5.5, 0, 0, "GAME OVER!!");
+
+        al_draw_textf(
+            font,                                     
+            al_map_rgb(255,255,255),                  
+            tela->x/2,               
+            tela->y/2 - tela->font*2.5,               
+            ALLEGRO_ALIGN_CENTRE,                     
+            "Seu personagem realizou %d assassinatos",
+            personagem->kill                          
+        );
+
+        al_draw_justified_text(font, al_map_rgb(255,255,255), tela->x/2 - tela->font*5, 0,
+        tela->y/2 + tela->font*1, 0, 0, "Deseja tentar novamente?");
+
+        al_draw_justified_text(font, cor_button1, tela->x/2 - tela->font*2.5, 0,
+        tela->y/2 + tela->font*3, 0, 0, "SIM");
+
+        al_draw_justified_text(font, cor_button2, tela->x/2 + tela->font*1.5, 0,
+        tela->y/2 + tela->font*3, 0, 0, "NÃO");
+
+        al_flip_display();
+
+        if(event.keyboard.keycode == 67 && event.type == 10){
+
+            if(selecionado == 1){
+                if(personagem->kill == 6) return 6;
+                else return 5;
+            }
+            else if(selecionado == 2)return 1;
+
+        }
+        if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+            return 0; //fim execucao
+        }
+    }
+}
+
+int tela_fase1(ALLEGRO_EVENT_QUEUE * event_queue,
+    ALLEGRO_BITMAP * fundo_jogo, ALLEGRO_FONT *font, tela *tela, player *personagem){
+
+    return jogo(event_queue, fundo_jogo, font, tela, personagem);
+}
+
+int tela_boss(ALLEGRO_EVENT_QUEUE * event_queue,
+    ALLEGRO_BITMAP * fundo_boss, ALLEGRO_FONT *font, tela *tela, player *personagem){
+
+    return jogo_boss(event_queue, fundo_boss, font, tela, personagem);
+}
+
+int tela_selecao_fase(ALLEGRO_EVENT_QUEUE * event_queue,
+    ALLEGRO_BITMAP * fundo_selecao, ALLEGRO_FONT *font, tela *tela, int *fase){
+
+        ALLEGRO_BITMAP * fase1;
+        fase1 = al_load_bitmap("sprites/fundo/fundo_jogo/background_1/origbig.png");
+        ALLEGRO_BITMAP * fase2;
+        fase2 = al_load_bitmap("sprites/fundo/fundo_jogo/background_3/origbig.png");
+    
+        ALLEGRO_COLOR cor_button1 = al_map_rgb(100,0,0);
+        ALLEGRO_COLOR cor_button2 = al_map_rgb(100,0,0);
+        ALLEGRO_COLOR cor_button3 = al_map_rgb(100,0,0);
+        int selecionado = 0;
+
+    
+        while(1){
+    
+            ALLEGRO_EVENT event;
+            al_wait_for_event(event_queue, &event);
+    
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(fundo_selecao,
+                0, 0, // Ponto de origem do bitmap (canto superior esquerdo)
+                al_get_bitmap_width(fundo_selecao), // Largura original do bitmap
+                al_get_bitmap_height(fundo_selecao), // Altura original do bitmap
+                0, 0, // Ponto de destino na tela (canto superior esquerdo)
+                tela->x, // Largura para desenhar (largura da tela)
+                tela->y, // Altura para desenhar (altura da tela)
+                0 // Flags (normalmente 0)
+            );
+    
+            if(event.keyboard.keycode == 19 && (event.type == 10)){
+                if(selecionado == 0){
+                    selecionado = 1;
+                    cor_button1 = al_map_rgb(0,0,255);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+    
+                } else if(selecionado == 1){
+                    selecionado = 3;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(0,0,255);
+    
+                } else if(selecionado == 2){
+                    selecionado = 3;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(0,0,255);
+                
+                } else if(selecionado == 3){
+                    selecionado = 0;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+                }
+            }
+    
+            if(event.keyboard.keycode == 23 && (event.type == 10)){
+                if(selecionado == 0){
+                    selecionado = 3;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(0,0,255);
+    
+                } else if(selecionado == 1){
+                    selecionado = 0;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+    
+                } else if(selecionado == 2){
+                    selecionado = 0;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+                
+                } else if(selecionado == 3){
+                    selecionado = 1;
+                    cor_button1 = al_map_rgb(0,0,255);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+                }
+            }
+    
+            //movimento para a esquerda
+            if(event.keyboard.keycode == 1 && (event.type == 10)){
+                if(selecionado == 0){
+                    selecionado = 2;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(0,0,255);
+                    cor_button3 = al_map_rgb(100,0,0);
+    
+                } else if(selecionado == 1){
+                    selecionado = 0;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+    
+                } else if(selecionado == 2){
+                    selecionado = 1;
+                    cor_button1 = al_map_rgb(0,0,255);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+                }
+            }
+    
+            if(event.keyboard.keycode == 4 && (event.type == 10)){
+                if(selecionado == 0){
+                    selecionado = 1;
+                    cor_button1 = al_map_rgb(0,0,255);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+    
+                } else if(selecionado == 1){
+                    selecionado = 2;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(0,0,255);
+                    cor_button3 = al_map_rgb(100,0,0);
+    
+                } else if(selecionado == 2){
+                    selecionado = 0;
+                    cor_button1 = al_map_rgb(100,0,0);
+                    cor_button2 = al_map_rgb(100,0,0);
+                    cor_button3 = al_map_rgb(100,0,0);
+                }
+            }
+    
+            al_draw_justified_text(font, al_map_rgb(100,0,0), tela->x/2 - tela->font*5, 0,
+                tela->font*2, 0, 0, "O INICIO");
+    
+            al_draw_filled_rectangle(tela->x/2 - tela->font*6, tela->y/2 - tela->font*3, 
+                tela->x/2 - tela->font*5 + tela->font*4, 
+                tela->y/2 - tela->font*2 + tela->font*4, cor_button1);
+    
+            al_draw_scaled_bitmap(fase1,
+                0, 0, // imagem 3
+                1080, //largura
+                1080, // altura
+                tela->x/2 - tela->font*5.5, tela->y/2 - tela->font*2.5, // Ponto de destino na tela
+                tela->font*4, // Largura para desenhar (largura da tela)
+                tela->font*4, // Altura para desenhar (altura da tela)
+                0 // Flags (normalmente 0)
+            );
+    
+            al_draw_justified_text(font, al_map_rgb(100,0,0), tela->x/2 + tela->font*1.5, 0,
+                tela->font*2, 0, 0, "O RETORNO");
+
+            al_draw_filled_rectangle(tela->x/2 + tela->font, tela->y/2 - tela->font*3, 
+                tela->x/2 + tela->font + tela->font*5, 
+                tela->y/2 - tela->font*2 + tela->font*4, cor_button2);
+    
+            al_draw_scaled_bitmap(fase2,
+                0, 0, // imagem 3
+                1080, //largura
+                1080, // altura
+                tela->x/2 + tela->font*1.5, tela->y/2 - tela->font*2.5, // Ponto de destino na tela
+                tela->font*4, // Largura para desenhar (largura da tela)
+                tela->font*4, // Altura para desenhar (altura da tela)
+                0 // Flags (normalmente 0)
+            );
+    
+            al_draw_justified_text(font, cor_button3, tela->x/2 - tela->font*1.5, 0,
+                tela->y/2 + tela->font*4, 0, 0, "VOLTAR");
+    
+            al_flip_display();
+    
+            if(event.keyboard.keycode == 67 && event.type == 10){
+    
+                if(selecionado == 1){
+    
+                    *fase = 1;
+                    return 5; //estagio jogo
+    
+                } else if(selecionado == 2){
+    
+                    *fase = 2;
+                    return 5; //estagio jogo
+    
+                } else if(selecionado == 3){
+    
+                    return 3; //estagio personagem
+    
+                }
+    
+            }
+    
+            if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                return 0; //terminar execucao
+            }
+    
+        }
+        
+        
+        al_destroy_bitmap(fase1);
+        al_destroy_bitmap(fase2);
 }
 
 int tela_selecao(ALLEGRO_EVENT_QUEUE * event_queue,
     ALLEGRO_BITMAP * fundo_selecao, ALLEGRO_FONT *font, tela *tela, int *personagem){
 
     ALLEGRO_BITMAP * playerM;
-    playerM = al_load_bitmap("sprites/personagem/mago/Fire_vizard/Fireball.png");
+    playerM = al_load_bitmap("sprites/personagem/mago/Fire_vizard/foto_mago.png");
     ALLEGRO_BITMAP * playerS;
-    playerS = al_load_bitmap("sprites/personagem/soldado/Soldier_1/Grenade.png");
+    playerS = al_load_bitmap("sprites/personagem/soldado/Soldier_1/foto_soldado.png");
 
     ALLEGRO_COLOR cor_button1 = al_map_rgb(100,0,0);
     ALLEGRO_COLOR cor_button2 = al_map_rgb(100,0,0);
@@ -382,30 +551,30 @@ int tela_selecao(ALLEGRO_EVENT_QUEUE * event_queue,
 
 
         al_draw_filled_rectangle(tela->x/2 - tela->font*6, tela->y/2 - tela->font*3, 
-            tela->x/2 - tela->font*6 + tela->font*4, 
-            tela->y/2 - tela->font*3 + tela->font*4, cor_button1);
+            tela->x/2 - tela->font*5 + tela->font*4, 
+            tela->y/2 - tela->font*2 + tela->font*4, cor_button1);
 
         al_draw_scaled_bitmap(playerM,
-            256, 0, // imagem 3
-            128, //largura
-            128, // altura
-            tela->x/2 - tela->font*8, tela->y/2 - tela->font*7, // Ponto de destino na tela
-            tela->font*8, // Largura para desenhar (largura da tela)
-            tela->font*8, // Altura para desenhar (altura da tela)
+            0, 0, // imagem 3
+            1080, //largura
+            1080, // altura
+            tela->x/2 - tela->font*5.5, tela->y/2 - tela->font*2.5, // Ponto de destino na tela
+            tela->font*4, // Largura para desenhar (largura da tela)
+            tela->font*4, // Altura para desenhar (altura da tela)
             0 // Flags (normalmente 0)
         );
 
-        al_draw_filled_rectangle(tela->x/2 + tela->font*2, tela->y/2 - tela->font*3, 
-            tela->x/2 + tela->font*2 + tela->font*4, 
-            tela->y/2 - tela->font*3 + tela->font*4, cor_button2);
+        al_draw_filled_rectangle(tela->x/2 + tela->font, tela->y/2 - tela->font*3, 
+            tela->x/2 + tela->font + tela->font*5, 
+            tela->y/2 - tela->font*2 + tela->font*4, cor_button2);
 
         al_draw_scaled_bitmap(playerS,
-            256, 0, // imagem 3
-            128, //largura
-            128, // altura
-            tela->x/2 + tela->font, tela->y/2 - tela->font*7, // Ponto de destino na tela
-            tela->font*8, // Largura para desenhar (largura da tela)
-            tela->font*8, // Altura para desenhar (altura da tela)
+            0, 0, // imagem 3
+            1080, //largura
+            1080, // altura
+            tela->x/2 + tela->font*1.5, tela->y/2 - tela->font*2.5, // Ponto de destino na tela
+            tela->font*4, // Largura para desenhar (largura da tela)
+            tela->font*4, // Altura para desenhar (altura da tela)
             0 // Flags (normalmente 0)
         );
 

@@ -30,6 +30,11 @@ int main (){
 	ALLEGRO_BITMAP * inicio;
 	ALLEGRO_BITMAP *fundo_config;
 	ALLEGRO_BITMAP *fundo_selecao;
+	ALLEGRO_BITMAP *fundo_selecao_fase;
+	ALLEGRO_BITMAP *fundo_fase1;
+	ALLEGRO_BITMAP *fundo_fase2;
+	ALLEGRO_BITMAP *fundo_boss1;
+	ALLEGRO_BITMAP *fundo_boss2;
 
 	ALLEGRO_FONT *font;
 
@@ -48,9 +53,15 @@ int main (){
 	
 	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 	//configuracao de tamanho dinamico
-	inicio = al_load_bitmap("sprites/fundo/fundo_inicio.png");
-	fundo_config = al_load_bitmap("sprites/fundo/fundo_config.png");
-	fundo_selecao = al_load_bitmap("sprites/fundo/fundo_selecao.png");
+	inicio = al_load_bitmap("sprites/fundo/fundo_geral/cidade2.png");
+	fundo_config = al_load_bitmap("sprites/fundo/fundo_geral/cidade4.png");
+	fundo_selecao = al_load_bitmap("sprites/fundo/fundo_geral/cidade7.png");
+	fundo_selecao_fase = al_load_bitmap("sprites/fundo/fundo_geral/cidade5.png");
+	fundo_fase1 = al_load_bitmap("sprites/fundo/fundo_jogo/background_1/origbig.png");
+	fundo_fase2 = al_load_bitmap("sprites/fundo/fundo_jogo/background_3/origbig.png");
+	fundo_boss1 = al_load_bitmap("sprites/fundo/fundo_jogo/background_2/origbig.png");
+	fundo_boss2 = al_load_bitmap("sprites/fundo/fundo_jogo/background_4/origbig.png");
+
 
 	al_set_system_mouse_cursor(display, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT);
 
@@ -59,6 +70,7 @@ int main (){
 	player *personagem;
 	int escolha = 0;
 	int estado = 1;
+	int fase = 0;
 
 	//controla os estados
 	while(1){
@@ -67,18 +79,24 @@ int main (){
 		al_wait_for_event(event_queue, &event);
 
 		font = al_load_font("fonte/lead_coat/leadcoat.ttf", tela->font, 0);
-	
 		if(estado == 0) break;
 		if(estado == 1)estado = tela_de_inicio(event_queue, inicio, font, tela);
 		if(estado == 2)estado = tela_config(event_queue, display, fundo_config, font, tela);
 		if(estado == 3)estado = tela_selecao(event_queue, fundo_selecao, font, tela, &escolha);
-		if(estado == 4){
-			if(escolha == 1){
-				personagem = player_create_person1(tela->font*6, tela->font*6, 
-					tela->x/2 - tela->font*3, tela->y - tela->font);
-			}
-			estado = tela_fase1(event_queue, fundo_config, font, tela, personagem);
+		if(estado == 4)estado = tela_selecao_fase(event_queue, fundo_selecao_fase, font, tela, &fase);
+		if(estado == 5){
+			if(escolha == 1)personagem = player_create_person1(tela, tela->font*6, tela->font*6, 5,
+				tela->x/2 - tela->font*3, tela->y - tela->font);
+
+			if(fase == 1) estado = tela_fase1(event_queue, fundo_fase1, font, tela, personagem);
+			else estado = tela_fase1(event_queue, fundo_fase2, font, tela, personagem);
 		}
+		if(estado == 6){
+			if(fase == 1)estado = tela_boss(event_queue, fundo_boss1, font, tela, personagem);
+			else estado = tela_boss(event_queue, fundo_boss2, font, tela, personagem);
+		}
+		if(estado == 7)estado = tela_fim(event_queue, fundo_boss2, font, tela, personagem);
+		if(estado == 8)estado = tela_ganhou(event_queue, fundo_boss2, font, tela);
 	}
 
 	al_destroy_display(display);

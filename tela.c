@@ -2,13 +2,18 @@
 
 tela *create_tela(int x, int y){
 
-    tela *tela = malloc(sizeof(tela));
+    tela *tela = malloc(sizeof(*tela));
     if(!tela) return NULL;
 
     tela->x = x;
     tela->y = y;
     tela->font = y/12;
     tela->player = x/20;
+    tela->chao = tela->y - tela->font;
+    tela->gravity = tela->x/1280.;
+    tela->jump_strength = tela->x/-64.;
+    tela->jump_strength_boss = tela->x/-40.;
+    tela->max_fall = tela->x/38.;
 
     return tela;
 }
@@ -19,6 +24,12 @@ tela *muda_tela(tela *tela, int x, int y){
     tela->y = y;
     tela->font = y/12;
     tela->player = x/20;
+    tela->chao = tela->y - tela->font;
+    tela->gravity = tela->x/1280.;
+    tela->jump_strength = tela->x/-64.;
+    tela->jump_strength_boss = tela->x/-40.;
+    tela->max_fall = tela->x/38.;
+
 
     return tela;
 }
@@ -28,7 +39,7 @@ void destroi_tela(tela *tela){
 }
 
 camera *create_camera(int x, int y){
-    camera *camera = malloc(sizeof(camera));
+    camera *camera = malloc(sizeof(*camera));
     if(!camera) return NULL;
 
     camera->x = x;
