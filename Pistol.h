@@ -5,7 +5,7 @@
 
 #define PISTOL_COOLDOWN 10																										//Tamanho, em frames, do tempo entre um tiro e outro (!)
 #define COOLDOWN_INIMIGO 25
-#define COOLDOWN_BOSS 70
+#define COOLDOWN_BOSS 45
 
 typedef struct {																												//Definição da estrutura de uma pistola (!)
 	unsigned char timer;																										//Relógio de intervalo entre tiros (!)

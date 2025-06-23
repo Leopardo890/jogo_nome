@@ -4,6 +4,8 @@
 #include <allegro5/keyboard.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_audio.h>  
+#include <allegro5/allegro_acodec.h> 
 
 #include <stdio.h>
 
@@ -19,7 +21,10 @@ int main (){
 	al_init_image_addon();
 	al_install_keyboard();
 	al_init_ttf_addon();
+	al_install_audio();
 	al_install_mouse();
+	al_init_acodec_addon();
+	al_reserve_samples(1);
 
 	// x -> 640 800 1024 1920
 	// y -> 360 450 576 1080
@@ -62,6 +67,10 @@ int main (){
 	fundo_boss1 = al_load_bitmap("sprites/fundo/fundo_jogo/background_2/origbig.png");
 	fundo_boss2 = al_load_bitmap("sprites/fundo/fundo_jogo/background_4/origbig.png");
 
+	//ALLEGRO_AUDIO_STREAM *background_music = al_load_audio_stream("sprites/som/leap-motiv-113893.ogg", 4096, 4);
+	//al_set_audio_stream_playmode(background_music, ALLEGRO_PLAYMODE_LOOP);
+	//al_attach_audio_stream_to_mixer(background_music, al_get_default_mixer());
+	//al_set_mixer_gain(al_get_default_mixer(), 0.5);
 
 	al_set_system_mouse_cursor(display, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT);
 
@@ -106,6 +115,7 @@ int main (){
 	al_destroy_font(font);
 	al_destroy_bitmap(inicio);
 	al_destroy_event_queue(event_queue);
-
+    //al_uninstall_audio();
+    //al_uninstall_system(); 
 	return 0;
 }

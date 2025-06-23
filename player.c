@@ -14,33 +14,41 @@ player *boss_creat(tela *tela, int side_x, int side_y, int hp, int x, int y){
 	new_square->kill = 0;
 	new_square->controle = joystick_create();
 	new_square->fire = pistol_create();
-	new_square->aparencia = malloc(sizeof(ALLEGRO_BITMAP*)*20);
+	new_square->aparencia = malloc(sizeof(ALLEGRO_BITMAP*)*26);
 
 	new_square->hitbox = malloc(sizeof(hitbox));
 	new_square->hitbox->x1 = x + tela->font;
 	new_square->hitbox->x2 = x*2 + tela->font;
 	new_square->hitbox->y1 = y/2;
 
-	new_square->aparencia[0] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Idle1.png");
-	new_square->aparencia[1] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Idle2.png");
-	new_square->aparencia[2] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Jump1.png");
-	new_square->aparencia[3] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Jump2.png");
-	new_square->aparencia[4] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Run1.png");
-	new_square->aparencia[5] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Run2.png");
-	new_square->aparencia[6] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Sitdown1.png");
-	new_square->aparencia[7] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Sitdown2.png");
-	new_square->aparencia[8] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Walk1.png");
-	new_square->aparencia[9] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Walk2.png");
-	new_square->aparencia[10] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Idle1_left.png");
-	new_square->aparencia[11] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/morre.png");
-	new_square->aparencia[12] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/morre_left.png");
-	new_square->aparencia[13] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Jump1_left.png");
-	new_square->aparencia[14] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/4.png");
-	new_square->aparencia[15] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/4_left.png");
-	new_square->aparencia[16] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/1.png");
-	new_square->aparencia[17] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/1_left.png");
-	new_square->aparencia[18] = al_load_bitmap("sprites/inimigos/boss/4 Shoot_effects/9_1.png");
-	new_square->aparencia[19] = al_load_bitmap("sprites/inimigos/boss/4 Shoot_effects/9_1_left.png");
+	new_square->aparencia[0] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/1.png");
+	new_square->aparencia[1] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/2.png");
+	new_square->aparencia[2] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/3.png");
+	new_square->aparencia[3] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/4.png");
+	new_square->aparencia[4] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/5.png");
+	new_square->aparencia[5] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/1_left.png");
+	new_square->aparencia[6] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/2_left.png");
+	new_square->aparencia[7] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/3_left.png");
+	new_square->aparencia[8] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/4_left.png");
+	new_square->aparencia[9] = al_load_bitmap("sprites/inimigos/boss/3 Hands/3 Cyborg/5_left.png");
+	new_square->aparencia[10] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Idle1.png");
+	new_square->aparencia[11] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Idle2.png");
+	new_square->aparencia[12] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Jump1.png");
+	new_square->aparencia[13] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Jump2.png");
+	new_square->aparencia[14] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Run1.png");
+	new_square->aparencia[15] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Run2.png");
+	new_square->aparencia[16] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Sitdown1.png");
+	new_square->aparencia[17] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Sitdown2.png");
+	new_square->aparencia[18] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Walk1.png");
+	new_square->aparencia[19] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Walk2.png");
+	new_square->aparencia[20] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Idle1_left.png");
+	new_square->aparencia[21] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/morre.png");
+	new_square->aparencia[22] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/morre_left.png");
+	new_square->aparencia[23] = al_load_bitmap("sprites/inimigos/boss/1 Characters/3 Cyborg/Jump1_left.png");
+	new_square->aparencia[24] = al_load_bitmap("sprites/inimigos/boss/4 Shoot_effects/9_1.png");
+	new_square->aparencia[25] = al_load_bitmap("sprites/inimigos/boss/4 Shoot_effects/9_1_left.png");
+
+
 
 	return new_square;
 }
@@ -48,8 +56,8 @@ player *boss_creat(tela *tela, int side_x, int side_y, int hp, int x, int y){
 void boss_shot(tela *tela, player *boss, player *personagem, camera *camera){
 	bullet *shot;
 
-	if(boss->face == 1) shot = pistol_shot_boss(tela, boss->x + boss->side_x/4, boss->y + boss->side_y/1.8, 1, boss->fire);
-	else if(boss->face == 2) shot = pistol_shot_boss(tela, boss->x + boss->side_x/2, boss->y + boss->side_y/1.8, 2, boss->fire);
+	if(boss->face == 1) shot = pistol_shot_boss(tela, boss->x + boss->side_x/4, boss->y + boss->side_y/1.7, 1, boss->fire);
+	else if(boss->face == 2) shot = pistol_shot_boss(tela, boss->x + boss->side_x/2, boss->y + boss->side_y/1.7, 2, boss->fire);
 
 	if(shot) boss->fire->shots = shot;
 }

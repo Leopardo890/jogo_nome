@@ -1,3 +1,6 @@
+#ifndef __ESTADO__ 																																//Guardas de inclusão (!)
+#define __ESTADO__		
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
@@ -6,6 +9,8 @@
 #include "tela.h"
 #include "player.h"
 #include "jogo.h"
+
+int tela_pause(ALLEGRO_EVENT_QUEUE * event_queue, ALLEGRO_FONT *font, tela *tela);
 
 int tela_fim(ALLEGRO_EVENT_QUEUE * event_queue,
     ALLEGRO_BITMAP * fundo_fim, ALLEGRO_FONT *font, tela *tela, player *personagem);
@@ -30,3 +35,5 @@ int tela_fase1(ALLEGRO_EVENT_QUEUE * event_queue,
 
 int tela_boss(ALLEGRO_EVENT_QUEUE * event_queue,
     ALLEGRO_BITMAP * fundo_boss, ALLEGRO_FONT *font, tela *tela, player *personagem);
+
+#endif

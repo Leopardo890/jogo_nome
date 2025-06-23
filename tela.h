@@ -1,5 +1,5 @@
-#ifndef __tela__
-#define __tela__
+#ifndef __TELA__
+#define __TELA__
 
 #include <stdlib.h>
 #include <stdlib.h>

@@ -181,13 +181,13 @@ void atualiza_posicao(ALLEGRO_EVENT event, player *personagem, tela *tela, camer
                 index->hitbox->y2 = index->y + 1.3*tela->font;
             }
 
-            if(index){
-                //hitbox bala personagem
-
-                al_draw_rectangle(index->hitbox->x1 - camera->x, index->hitbox->y1
-                    , index->hitbox->x2 - camera->x, index->hitbox->y2, 
-                al_map_rgb(0, 0, 255), 1.0f);
-            }
+            //if(index){
+            //    //hitbox bala personagem
+//
+            //    al_draw_rectangle(index->hitbox->x1 - camera->x, index->hitbox->y1
+            //        , index->hitbox->x2 - camera->x, index->hitbox->y2, 
+            //    al_map_rgb(0, 0, 255), 1.0f);
+            //}
 
             if(index->x - camera->x < 0 || index->x - camera->x >= tela->x || index->y < 0){
                 if(previous){
@@ -780,13 +780,13 @@ void inimigo_ataca(ALLEGRO_EVENT event, player *inimigo, tela *tela, camera *cam
             index->hitbox->y2 -= BULLET_MOVE;
         }
 
-        if(index){
-            //hitbox bala personagem
-
-            al_draw_rectangle(index->hitbox->x1 - camera->x, index->hitbox->y1
-                , index->hitbox->x2 - camera->x, index->hitbox->y2, 
-            al_map_rgb(255, 0, 255), 1.0f);
-        }
+        //if(index){
+        //    //hitbox bala personagem
+//
+        //    al_draw_rectangle(index->hitbox->x1 - camera->x, index->hitbox->y1
+        //        , index->hitbox->x2 - camera->x, index->hitbox->y2, 
+        //    al_map_rgb(255, 0, 255), 1.0f);
+        //}
 
         if(index->x < 0 || index->x > 8*tela->x || index->y < 0){
             if(previous){
@@ -1051,17 +1051,17 @@ void boss_parado(tela *tela, ALLEGRO_EVENT event, player *boss, camera *camera, 
         boss->hitbox->y1 = boss->y + 2.8*tela->font;
         boss->hitbox->y2 = boss->y + 10*tela->font;
 
-        al_draw_scaled_bitmap(boss->aparencia[16],
-            0, 0, // imagem 3
-            48, //largura
-            48, // altura
-            boss->x + 0.7*tela->font - camera->x, boss->y + 1.9*tela->font, // Ponto de destino na tela
-            boss->side_x, // Largura para desenhar (largura da tela)
-            boss->side_y, // Altura para desenhar (altura da tela)
-            0 // Flags (normalmente 0)
-        );
+        //al_draw_scaled_bitmap(boss->aparencia[16],
+        //    0, 0, // imagem 3
+        //    48, //largura
+        //    48, // altura
+        //    boss->x + 0.7*tela->font - camera->x, boss->y + 1.9*tela->font, // Ponto de destino na tela
+        //    boss->side_x, // Largura para desenhar (largura da tela)
+        //    boss->side_y, // Altura para desenhar (altura da tela)
+        //    0 // Flags (normalmente 0)
+        //);
 
-        al_draw_scaled_bitmap(boss->aparencia[0],
+        al_draw_scaled_bitmap(boss->aparencia[10],
             48*parado->frame_right, 0, // imagem 3
             48, //largura
             48, // altura
@@ -1085,17 +1085,17 @@ void boss_parado(tela *tela, ALLEGRO_EVENT event, player *boss, camera *camera, 
         boss->hitbox->y1 = boss->y + 2.8*tela->font;
         boss->hitbox->y2 = boss->y + 10*tela->font;
 
-        al_draw_scaled_bitmap(boss->aparencia[17],
-            0, 0, // imagem 3
-            48, //largura
-            48, // altura
-            boss->x + 2.6*tela->font - camera->x, boss->y + 1.9*tela->font, // Ponto de destino na tela
-            boss->side_x, // Largura para desenhar (largura da tela)
-            boss->side_y, // Altura para desenhar (altura da tela)
-            0 // Flags (normalmente 0)
-        );
+        //al_draw_scaled_bitmap(boss->aparencia[17],
+        //    0, 0, // imagem 3
+        //    48, //largura
+        //    48, // altura
+        //    boss->x + 2.6*tela->font - camera->x, boss->y + 1.9*tela->font, // Ponto de destino na tela
+        //    boss->side_x, // Largura para desenhar (largura da tela)
+        //    boss->side_y, // Altura para desenhar (altura da tela)
+        //    0 // Flags (normalmente 0)
+        //);
 
-        al_draw_scaled_bitmap(boss->aparencia[10],
+        al_draw_scaled_bitmap(boss->aparencia[20],
             48*parado->frame_left, 0, // imagem 3
             48, //largura
             48, // altura
@@ -1117,7 +1117,7 @@ void boss_parado(tela *tela, ALLEGRO_EVENT event, player *boss, camera *camera, 
 unsigned char boss_morre(ALLEGRO_EVENT event, player *boss, camera *camera, flag *morre){
     //direita
     if(boss->face == 2){
-        al_draw_scaled_bitmap(boss->aparencia[11],
+        al_draw_scaled_bitmap(boss->aparencia[21],
             128*morre->frame_right, 0, // imagem 3
             128, //largura
             128, // altura
@@ -1136,7 +1136,7 @@ unsigned char boss_morre(ALLEGRO_EVENT event, player *boss, camera *camera, flag
     }
     //esquerda
     else if(boss->face == 1){
-        al_draw_scaled_bitmap(boss->aparencia[12],
+        al_draw_scaled_bitmap(boss->aparencia[22],
             128*morre->frame_left, 0, // imagem 3
             128, //largura
             128, // altura
@@ -1260,7 +1260,7 @@ void boss_atualiza_posicao(ALLEGRO_EVENT event, player *boss, tela *tela, camera
     }
 }
 
-void boss_atirando_baixo(tela *tela, ALLEGRO_EVENT event, player *boss, camera *camera, flag *parado){
+void boss_atirando_baixo(tela *tela, ALLEGRO_EVENT event, player *boss, camera *camera, flag *parado, flag *tiro){
     
     //direita
     if(boss->face == 2){
@@ -1270,17 +1270,18 @@ void boss_atirando_baixo(tela *tela, ALLEGRO_EVENT event, player *boss, camera *
         boss->hitbox->y1 = boss->y + 2.8*tela->font;
         boss->hitbox->y2 = boss->y + 10*tela->font;
 
-        al_draw_scaled_bitmap(boss->aparencia[15],
+        al_draw_scaled_bitmap(boss->aparencia[tiro->frame_right],
             0, 0, // imagem x
             32, //largura
             32, // altura
-            boss->x + 1.5*tela->font - camera->x, 4.2*tela->font, // Ponto de destino na tela
+            boss->x + 10*tela->font - camera->x, boss->y - 10*tela->font, // Ponto de destino na tela
             boss->side_x/1.5, // Largura para desenhar (largura da tela)
             boss->side_y/1.5, // Altura para desenhar (altura da tela)
             0 // Flags (normalmente 0)
         );
 
-        al_draw_scaled_bitmap(boss->aparencia[0],
+
+        al_draw_scaled_bitmap(boss->aparencia[10],
             48*parado->frame_right, 0, // imagem 3
             48, //largura
             48, // altura
@@ -1291,8 +1292,9 @@ void boss_atirando_baixo(tela *tela, ALLEGRO_EVENT event, player *boss, camera *
         );
 
         if(event.type == ALLEGRO_EVENT_TIMER) parado->cont++;
-        if(parado->cont == 6){
+        if(parado->cont == 8){
             parado->frame_right = (parado->frame_right + 1)%4;
+            tiro->frame_right = (tiro->frame_right)%5;
             parado->cont = 0;
         }
     }
@@ -1304,17 +1306,17 @@ void boss_atirando_baixo(tela *tela, ALLEGRO_EVENT event, player *boss, camera *
         boss->hitbox->y1 = boss->y + 2.8*tela->font;
         boss->hitbox->y2 = boss->y + 10*tela->font;
 
-        al_draw_scaled_bitmap(boss->aparencia[14],
+        al_draw_scaled_bitmap(boss->aparencia[tiro->frame_left],
             0, 0, // imagem x
             32, //largura
             32, // altura
-            boss->x + 1.5*tela->font - camera->x, 4.2*tela->font, // Ponto de destino na tela
+            boss->x + 2.5*tela->font - camera->x, boss->y + 2*tela->font, // Ponto de destino na tela
             boss->side_x/1.5, // Largura para desenhar (largura da tela)
             boss->side_y/1.5, // Altura para desenhar (altura da tela)
             0 // Flags (normalmente 0)
         );
 
-        al_draw_scaled_bitmap(boss->aparencia[10],
+        al_draw_scaled_bitmap(boss->aparencia[20],
             48*parado->frame_left, 0, // imagem 3
             48, //largura
             48, // altura
@@ -1325,9 +1327,11 @@ void boss_atirando_baixo(tela *tela, ALLEGRO_EVENT event, player *boss, camera *
         );
 
         if(event.type == ALLEGRO_EVENT_TIMER) parado->cont++;
-        if(parado->cont == 6){
+        if(parado->cont == 8){
             parado->frame_left = (parado->frame_left - 1);
+            tiro->frame_left = (tiro->frame_left - 1);
             if(parado->frame_left < 0)parado->frame_left = 3;
+            if(tiro->frame_left < 5)tiro->frame_left = 9;
             parado->cont = 0;
         }
     }
@@ -1364,13 +1368,13 @@ void boss_ataca(ALLEGRO_EVENT event, player *boss, tela *tela, camera *camera, f
             index->hitbox->y2 -= BULLET_MOVE;
         }
 
-        if(index){
-            //hitbox bala boss
-
-            al_draw_rectangle(index->hitbox->x1 - camera->x, index->hitbox->y1
-                , index->hitbox->x2 - camera->x, index->hitbox->y2, 
-            al_map_rgb(255, 0, 255), 1.0f);
-        }
+        //if(index){
+        //    //hitbox bala boss
+//
+        //    al_draw_rectangle(index->hitbox->x1 - camera->x, index->hitbox->y1
+        //        , index->hitbox->x2 - camera->x, index->hitbox->y2, 
+        //    al_map_rgb(255, 0, 255), 1.0f);
+        //}
 
         if(index->x - camera->x < 0 || index->x - camera->x >= tela->x || index->y < 0){
             if(previous){
@@ -1392,7 +1396,7 @@ void boss_ataca(ALLEGRO_EVENT event, player *boss, tela *tela, camera *camera, f
 
     for(bullet *index = boss->fire->shots; index != NULL; index = (bullet*)index->next){
         if(index->trajectory == 1){
-            al_draw_scaled_bitmap(boss->aparencia[19],
+            al_draw_scaled_bitmap(boss->aparencia[25],
                 48*tiro->frame_left, 0, // imagem x
                 48, //largura
                 48, // altura
@@ -1402,7 +1406,7 @@ void boss_ataca(ALLEGRO_EVENT event, player *boss, tela *tela, camera *camera, f
                 0 // Flags (normalmente 0)
             );
         } else if(index->trajectory == 2){
-            al_draw_scaled_bitmap(boss->aparencia[18],
+            al_draw_scaled_bitmap(boss->aparencia[24],
                 48*tiro->frame_right, 0, // imagem x
                 48, //largura
                 48, // altura
@@ -1438,6 +1442,7 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
     ALLEGRO_BITMAP * fundo_jogo, ALLEGRO_FONT *font, tela *tela, player *personagem){
 
     camera *camera = create_camera(0, 0);
+    int cond;
 
     ALLEGRO_BITMAP *coracao = al_load_bitmap("sprites/objetos/PNG/Items/000_0062_heart4.png");
 
@@ -1528,6 +1533,12 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
         fundo(tela, camera, fundo_jogo);
 
         if(!player_morrendo) evento_click(tela, event, personagem);
+        
+        //pause
+        if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) cond = tela_pause(event_queue, font, tela);
+        
+        if(cond == 0)return 0;
+        if(cond == 4)return 4;
 
         if(event.type == 30){
             
@@ -1572,9 +1583,9 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
                 player_morto = player_morre(event, personagem, camera, flag_morre);
 
             //hitbox player
-            al_draw_rectangle(personagem->hitbox->x1 - camera->x, personagem->hitbox->y1, 
-                personagem->hitbox->x2 - camera->x, personagem->hitbox->y2, 
-              al_map_rgb(0, 255, 0), 1.0f);
+            //al_draw_rectangle(personagem->hitbox->x1 - camera->x, personagem->hitbox->y1, 
+            //    personagem->hitbox->x2 - camera->x, personagem->hitbox->y2, 
+            //  al_map_rgb(0, 255, 0), 1.0f);
 
     
             //logica inimigo1
@@ -1604,15 +1615,19 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
             }
             
             inimigo_ataca(event, inimigo1, tela, camera, flag_ini_tiro);
+
+            if(personagem->hitbox->x1 >= inimigo1->hitbox->x1 &&
+                personagem->hitbox->x2 <= inimigo1->hitbox->x2) personagem->hp--;
             
             kill_player = check_kill(inimigo1, personagem);
             if(kill_player) player_morrendo = 1;
+            
 
             //hitbox inimigo1
-            al_draw_rectangle(inimigo1->hitbox->x1 - camera->x, inimigo1->hitbox->y1
-                , inimigo1->hitbox->x2 - camera->x, inimigo1->hitbox->y2, 
-                al_map_rgb(255, 0, 0), 1.0f);
-
+            //al_draw_rectangle(inimigo1->hitbox->x1 - camera->x, inimigo1->hitbox->y1
+            //    , inimigo1->hitbox->x2 - camera->x, inimigo1->hitbox->y2, 
+            //    al_map_rgb(255, 0, 0), 1.0f);
+//
             //logica inimigo2
             joystick_down(inimigo2->controle);
             if(!inimigo2_morto) kill_inimigo2 = check_kill(personagem, inimigo2);
@@ -1647,10 +1662,10 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
             if(kill_player) player_morrendo = 1;
 
             //hitbox inimigo2
-            al_draw_rectangle(inimigo2->hitbox->x1 - camera->x, inimigo2->hitbox->y1
-                , inimigo2->hitbox->x2 - camera->x, inimigo2->hitbox->y2, 
-                al_map_rgb(255, 0, 0), 1.0f);
-
+            //al_draw_rectangle(inimigo2->hitbox->x1 - camera->x, inimigo2->hitbox->y1
+            //    , inimigo2->hitbox->x2 - camera->x, inimigo2->hitbox->y2, 
+            //    al_map_rgb(255, 0, 0), 1.0f);
+//
             //logica inimigo3
             if(!inimigo3_morto) kill_inimigo3 = check_kill(personagem, inimigo3);
             if(kill_inimigo3){
@@ -1683,10 +1698,10 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
             if(kill_player) player_morrendo = 1;
 
             //hitbox inimigo3
-            al_draw_rectangle(inimigo3->hitbox->x1 - camera->x, inimigo3->hitbox->y1
-                , inimigo3->hitbox->x2 - camera->x, inimigo3->hitbox->y2, 
-                al_map_rgb(255, 0, 0), 1.0f);
-
+            //al_draw_rectangle(inimigo3->hitbox->x1 - camera->x, inimigo3->hitbox->y1
+            //    , inimigo3->hitbox->x2 - camera->x, inimigo3->hitbox->y2, 
+            //    al_map_rgb(255, 0, 0), 1.0f);
+//
             //logica inimigo4
             if(!inimigo4_morto) kill_inimigo4 = check_kill(personagem, inimigo4);
             if(kill_inimigo4){
@@ -1719,10 +1734,10 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
             if(kill_player) player_morrendo = 1;
 
             //hitbox inimigo4
-            al_draw_rectangle(inimigo4->hitbox->x1 - camera->x, inimigo4->hitbox->y1
-                , inimigo4->hitbox->x2 - camera->x, inimigo4->hitbox->y2, 
-                al_map_rgb(255, 0, 0), 1.0f);
-
+            //al_draw_rectangle(inimigo4->hitbox->x1 - camera->x, inimigo4->hitbox->y1
+            //    , inimigo4->hitbox->x2 - camera->x, inimigo4->hitbox->y2, 
+            //    al_map_rgb(255, 0, 0), 1.0f);
+//
             //logica inimigo5
             if(!inimigo5_morto) kill_inimigo5 = check_kill(personagem, inimigo5);
             if(kill_inimigo5){
@@ -1755,10 +1770,10 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
             if(kill_player) player_morrendo = 1;
 
             //hitbox inimigo5
-            al_draw_rectangle(inimigo5->hitbox->x1 - camera->x, inimigo5->hitbox->y1
-                , inimigo5->hitbox->x2 - camera->x, inimigo5->hitbox->y2, 
-                al_map_rgb(255, 0, 0), 1.0f);
-
+            //al_draw_rectangle(inimigo5->hitbox->x1 - camera->x, inimigo5->hitbox->y1
+            //    , inimigo5->hitbox->x2 - camera->x, inimigo5->hitbox->y2, 
+            //    al_map_rgb(255, 0, 0), 1.0f);
+//
             //logica inimigo6
             if(!inimigo6_morto) kill_inimigo6 = check_kill(personagem, inimigo6);
             if(kill_inimigo6){
@@ -1788,19 +1803,19 @@ int jogo(ALLEGRO_EVENT_QUEUE * event_queue,
             inimigo_ataca(event, inimigo6, tela, camera, flag_ini_tiro);
 
             //hitbox inimigo6
-            al_draw_rectangle(inimigo6->hitbox->x1 - camera->x, inimigo6->hitbox->y1
-                , inimigo6->hitbox->x2 - camera->x, inimigo6->hitbox->y2, 
-                al_map_rgb(255, 0, 0), 1.0f);
-            
+            //al_draw_rectangle(inimigo6->hitbox->x1 - camera->x, inimigo6->hitbox->y1
+            //    , inimigo6->hitbox->x2 - camera->x, inimigo6->hitbox->y2, 
+            //    al_map_rgb(255, 0, 0), 1.0f);
+            //
             kill_player = check_kill(inimigo6, personagem);
             if(kill_player) player_morrendo = 1;
 
             al_flip_display();
         }
  
-        if(personagem->kill == 6) return 6;
-
         if(player_morto) return 7;
+
+        if(personagem->kill == 6) return 6;
 
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
             return 0; //terminar execucao
@@ -1814,6 +1829,7 @@ int jogo_boss(ALLEGRO_EVENT_QUEUE * event_queue,
 
 
     camera *camera = create_camera(0, 0);
+    int cond;
 
     ALLEGRO_BITMAP *coracao = al_load_bitmap("sprites/objetos/PNG/Items/000_0062_heart4.png");
 
@@ -1849,6 +1865,8 @@ int jogo_boss(ALLEGRO_EVENT_QUEUE * event_queue,
         al_wait_for_event(event_queue, &event);
 
         if(!player_morrendo) evento_click(tela, event, personagem);
+        if(cond == 0)return 0;
+        if(cond == 4)return 4;
 
         if(event.type == 30){
 
@@ -1916,9 +1934,9 @@ int jogo_boss(ALLEGRO_EVENT_QUEUE * event_queue,
                 player_morto = player_morre(event, personagem, camera, flag_morre);
 
             //hitbox player
-            al_draw_rectangle(personagem->hitbox->x1 - camera->x, personagem->hitbox->y1, 
-                personagem->hitbox->x2 - camera->x, personagem->hitbox->y2, 
-              al_map_rgb(0, 255, 0), 1.0f);
+            //al_draw_rectangle(personagem->hitbox->x1 - camera->x, personagem->hitbox->y1, 
+            //    personagem->hitbox->x2 - camera->x, personagem->hitbox->y2, 
+            //  al_map_rgb(0, 255, 0), 1.0f);
 
 
             //logica boss
@@ -1932,33 +1950,30 @@ int jogo_boss(ALLEGRO_EVENT_QUEUE * event_queue,
                 if(boss_morto)personagem->kill++;
             } else if(!boss_morto){
 
-                if((boss->x - personagem->x <= tela->x/2 &&
-                    boss->x - personagem->x > tela->x/12 || 
-                    boss->x - personagem->x > -tela->x/2 - boss->hitbox->x2 + boss->hitbox->x1 &&
-                    boss->x - personagem->x < -tela->x/12 - boss->hitbox->x2 + boss->hitbox->x1) && 
-                    !boss->controle->up ){
+                if(!boss->controle->up && personagem->x <= boss->x - 2*tela->font){
 
-                    boss_atirando_baixo(tela, event, boss, camera, flag_ini_parado);
+                    boss_atirando_baixo(tela, event, boss, camera, flag_ini_parado, flag_ini_atirando);
                     if(!boss->fire->timer){
                         boss_shot(tela, boss, personagem, camera);
-                        boss->fire->timer = COOLDOWN_BOSS;
+                      boss->fire->timer = COOLDOWN_BOSS;
                     }
 
                 } else if(boss->x - personagem->x <= tela->x/12 && 
-                    boss->x - personagem->x > -tela->x/12 - boss->hitbox->x2 + boss->hitbox->x1){
+                    boss->x - personagem->x > -tela->x/12 - boss->hitbox->x2 + boss->hitbox->x1 &&
+                    !boss->controle->up){
 
                     //pular
-                    if (boss->chao  && !boss->controle->up) {
-                        boss->vel_y = tela->jump_strength_boss;
-                        boss->chao = 0;
-                        boss->pulando= 1;
-                        joystick_up(boss->controle);
-                    }
+                    //if (boss->chao  && !boss->controle->up) {
+                    //    boss->vel_y = tela->jump_strength_boss;
+                    //    boss->chao = 0;
+                    //    boss->pulando= 1;
+                    //    joystick_up(boss->controle);
+                    //}
 
-                    boss_pulando(tela, event, boss, camera, flag_ini_pulando);
+                    //boss_pulando(tela, event, boss, camera, flag_ini_pulando);
 
                 } else if(boss->controle->up){
-                    boss_pulando(tela, event, boss, camera, flag_ini_pulando);
+                    //boss_pulando(tela, event, boss, camera, flag_ini_pulando);
                 
                 }else {
                     boss_parado(tela, event, boss, camera, flag_ini_parado);
@@ -1972,9 +1987,9 @@ int jogo_boss(ALLEGRO_EVENT_QUEUE * event_queue,
             if(kill_player) player_morrendo = 1;
 
             //hitbox boss
-            al_draw_rectangle(boss->hitbox->x1 - camera->x, boss->hitbox->y1, 
-                boss->hitbox->x2 - camera->x, boss->hitbox->y2, 
-                al_map_rgb(255, 0, 0), 1.0f);
+            //al_draw_rectangle(boss->hitbox->x1 - camera->x, boss->hitbox->y1, 
+            //    boss->hitbox->x2 - camera->x, boss->hitbox->y2, 
+            //    al_map_rgb(255, 0, 0), 1.0f);
 
             al_flip_display();
         }

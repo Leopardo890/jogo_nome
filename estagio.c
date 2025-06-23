@@ -2,6 +2,115 @@
 #include "tela.h"
 #include <stdio.h>
 
+int tela_pause(ALLEGRO_EVENT_QUEUE * event_queue, ALLEGRO_FONT *font, tela *tela){
+
+    int selecionado = 0;
+
+    ALLEGRO_BITMAP *pause = al_load_bitmap("sprites/fundo/fundo_geral/cidade1.png");
+
+    ALLEGRO_COLOR cor_button1 = al_map_rgb(0,0,0);
+    ALLEGRO_COLOR cor_button2 = al_map_rgb(0,0,0);
+    ALLEGRO_COLOR cor_button3 = al_map_rgb(0,0,0);
+
+    while(1){
+        ALLEGRO_EVENT event;
+        al_wait_for_event(event_queue, &event);
+
+        
+        al_clear_to_color(al_map_rgba(0,0,0, 0));
+        al_draw_scaled_bitmap(pause,
+            0, 0, // Ponto de origem do bitmap (canto superior esquerdo)
+            al_get_bitmap_width(pause), // Largura original do bitmap
+            al_get_bitmap_height(pause), // Altura original do bitmap
+            0, 0, // Ponto de destino na tela (canto superior esquerdo)
+            tela->x, // Largura para desenhar (largura da tela)
+            tela->y, // Altura para desenhar (altura da tela)
+            0 // Flags (normalmente 0)
+        );
+        
+
+        if(event.keyboard.keycode == 19 && (event.type == 10)){
+            if(selecionado == 0){
+                cor_button1 = al_map_rgb(255,255,255);
+                cor_button2 = al_map_rgb(0,0,0);
+                cor_button3 = al_map_rgb(0,0,0);
+                selecionado = 1;
+            } else if(selecionado == 1){
+                cor_button1 = al_map_rgb(0,0,0);
+                cor_button2 = al_map_rgb(255,255,255);
+                cor_button3 = al_map_rgb(0,0,0);
+                selecionado = 2;
+            } else if(selecionado == 2){
+                cor_button1 = al_map_rgb(0,0,0);
+                cor_button2 = al_map_rgb(0,0,0);
+                cor_button3 = al_map_rgb(255,255,255);
+                selecionado = 3;
+            } else if(selecionado == 3){
+                cor_button1 = al_map_rgb(0,0,0);
+                cor_button2 = al_map_rgb(0,0,0);
+                cor_button3 = al_map_rgb(0,0,0);
+                selecionado = 0;
+            }
+        }
+
+        if(event.keyboard.keycode == 23 && (event.type == 10)){
+            if(selecionado == 3){
+                cor_button1 = al_map_rgb(0,0,0);
+                cor_button2 = al_map_rgb(255,255,255);
+                cor_button3 = al_map_rgb(0,0,0);
+                selecionado = 2;
+            } else if(selecionado == 2){
+                cor_button1 = al_map_rgb(255,255,255);
+                cor_button2 = al_map_rgb(0,0,0);
+                cor_button3 = al_map_rgb(0,0,0);
+                selecionado = 1;
+            } else if(selecionado == 1){
+                cor_button1 = al_map_rgb(0,0,0);
+                cor_button2 = al_map_rgb(0,0,0);
+                cor_button3 = al_map_rgb(0,0,0);
+                selecionado = 0;
+            } else if(selecionado == 0){
+                cor_button1 = al_map_rgb(0,0,0);
+                cor_button2 = al_map_rgb(0,0,0);
+                cor_button3 = al_map_rgb(255,255,255);
+                selecionado = 3;
+            }
+        }
+
+        al_draw_justified_text(font, cor_button1, tela->x/2 - 2.5*tela->font, ALLEGRO_ALIGN_CENTER,
+        tela->y/2 - tela->font*2, 0, 0, "CONTINUAR");
+        al_draw_justified_text(font, cor_button2, tela->x/2 - 1.5*tela->font, ALLEGRO_ALIGN_CENTER,
+        tela->y/2 - tela->font*0.5, 0, 0, "VOLTAR");
+        al_draw_justified_text(font, cor_button3, tela->x/2 - 1.3*tela->font, ALLEGRO_ALIGN_CENTER,
+        tela->y/2 + tela->font, 0, 0, "SAIR");
+
+        al_flip_display();
+
+        if(event.keyboard.keycode == 67 && event.type == 10){
+
+            if(selecionado == 1){
+
+                return 5; //continua
+
+            } else if(selecionado == 2){
+
+                return 4; //volta
+
+            } else if(selecionado == 3){
+
+                return 0;//fim execucao
+
+            }
+
+        }
+
+        if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+
+            return 0; //fim execucao
+        }
+    }
+}
+
 int tela_ganhou(ALLEGRO_EVENT_QUEUE * event_queue,
     ALLEGRO_BITMAP * fundo_fim, ALLEGRO_FONT *font, tela *tela){
 
@@ -44,25 +153,25 @@ int tela_ganhou(ALLEGRO_EVENT_QUEUE * event_queue,
             }
         }
 
-        al_draw_justified_text(font, al_map_rgb(255,255,255), tela->x/2 - tela->font*5.5, 0,
+        al_draw_justified_text(font, al_map_rgb(0, 0, 0), tela->x/2 - tela->font*5.5, 0,
         tela->y/2 - tela->font*5.5, 0, 0, "PARABENS, VOCE GANHOU!!");
 
-        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        al_draw_textf(font, al_map_rgb(0, 0, 0), tela->x/2, 
         tela->y/2 - tela->font*2.5, ALLEGRO_ALIGN_CENTRE, 
         "Com bravura inabalavel, voce se aventurou na cidade");
-        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        al_draw_textf(font, al_map_rgb(0, 0, 0), tela->x/2, 
         tela->y/2 - tela->font*1.5, ALLEGRO_ALIGN_CENTRE, 
         "em ruinas. Ali, com a forca de mil lendas, aniquilou");
-        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        al_draw_textf(font, al_map_rgb(0, 0, 0), tela->x/2, 
         tela->y/2 - tela->font*0.5, ALLEGRO_ALIGN_CENTRE, 
         "o exercito ciborgue e seu tirano lider. Por sua causa,");
-        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2 ,
+        al_draw_textf(font, al_map_rgb(0, 0, 0), tela->x/2 ,
         tela->y/2 + tela->font*0.5, ALLEGRO_ALIGN_CENTRE, 
         "inumeras vidas foram poupadas, e das cinzas, a cidade");
-        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        al_draw_textf(font, al_map_rgb(0, 0, 0), tela->x/2, 
         tela->y/2 + tela->font*1.5, ALLEGRO_ALIGN_CENTRE, 
         "erguer-se-á novamente, mais majestosa");
-        al_draw_textf(font, al_map_rgb(255,255,255), tela->x/2, 
+        al_draw_textf(font, al_map_rgb(0, 0, 0), tela->x/2, 
         tela->y/2 + tela->font*2.5, ALLEGRO_ALIGN_CENTRE, 
         "do que em seus dias de gloria.");
 
@@ -202,8 +311,7 @@ int tela_fim(ALLEGRO_EVENT_QUEUE * event_queue,
         if(event.keyboard.keycode == 67 && event.type == 10){
 
             if(selecionado == 1){
-                if(personagem->kill == 6) return 6;
-                else return 5;
+                return 5;
             }
             else if(selecionado == 2)return 1;
 

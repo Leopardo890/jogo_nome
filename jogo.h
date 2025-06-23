@@ -1,3 +1,6 @@
+#ifndef __JOGO__ 																																//Guardas de inclusão (!)
+#define __JOGO__		
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_image.h>
@@ -9,6 +12,7 @@
 
 #include "tela.h"
 #include "player.h"
+#include "estagio.h"
 
 typedef struct {
 
@@ -61,3 +65,5 @@ void inimigo_agachado(tela *tela, ALLEGRO_EVENT event, player *inimigo, camera *
 
 int jogo_boss(ALLEGRO_EVENT_QUEUE * event_queue,
     ALLEGRO_BITMAP * fundo_boss, ALLEGRO_FONT *font, tela *tela, player *personagem);
+
+#endif
